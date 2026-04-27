@@ -10,6 +10,16 @@ NOTE:
     WHAT DID I DO/ CHANGE: I CREATED A MENU OPTIONS FOR OUR APP OPENING
     COMMIY TITLE: Menu Options
     WHO I AM: ENDREA
+-------------------------------------------
+    DATE & TIME: April 27, 2026
+    WHAT DID I DO/CHANGE: Created viewCompletedTasks() function with undo support
+    COMMIT TITLE: View Completed Tasks Feature
+    WHO I AM: Althea 
+-------------------------------------------
+    DATE & TIME: April 27, 2029
+    WHAT DID I DO/ CHANGE: Added a class, struct, for menu options 1 and 2
+    COMMIT TITLE: Done menu options 1 and 2
+    WHO I AM: Endrea
 */
 
 #include <iostream>
