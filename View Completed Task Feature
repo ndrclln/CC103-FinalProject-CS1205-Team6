@@ -5,25 +5,25 @@
     WHO I AM: Althea
 */
 
-// --- COMPLETED TASK STACK NODE ---
+//--- COMPLETED TASK STACK NODE ---
 struct CompletedTask {
     string name;
-    int effort;           // 1=Low, 2=Medium, 3=High
+    int effort;           //1=Low, 2=Medium, 3=High
     string deadline;
     string rewardEarned;
     CompletedTask* next;
 };
 
-// Stack for completed tasks (global)
+//Stack for completed tasks (global)
 CompletedTask* completedTop = nullptr;
 
-// Push a completed task onto the stack
+//Push a completed task onto the stack
 void pushCompleted(string name, int effort, string deadline, string reward) {
     CompletedTask* node = new CompletedTask{name, effort, deadline, reward, completedTop};
     completedTop = node;
 }
 
-// Pop the last completed task (for undo)
+//Pop the last completed task (for undo)
 CompletedTask* popCompleted() {
     if (!completedTop) return nullptr;
     CompletedTask* temp = completedTop;
@@ -32,12 +32,12 @@ CompletedTask* popCompleted() {
     return temp;
 }
 
-// Check if stack is empty
+//Check if stack is empty
 bool isCompletedEmpty() {
     return completedTop == nullptr;
 }
 
-// Helper: effort number to label
+//Helper: effort number to label
 string effortLabel(int effort) {
     if (effort == 1) return "Low";
     if (effort == 2) return "Medium";
@@ -45,7 +45,7 @@ string effortLabel(int effort) {
 }
 
 // ============================================
-//   VIEW COMPLETED TASKS (with Undo option)
+// VIEW COMPLETED TASKS (with Undo option)
 // ============================================
 void viewCompletedTasks() {
     cout << YELLOW << "\n ~~~ COMPLETED TASKS ~~~ \n" << RESET << endl;
@@ -77,7 +77,7 @@ void viewCompletedTasks() {
         current = current->next;
     }
 
-    // Undo option
+    //Undo option
     cout << YELLOW << "\n (U) Undo Last Completed Task\n";
     cout << " (B) Back to Menu\n" << RESET;
     cout << GREEN << "Your choice: " << RESET;
