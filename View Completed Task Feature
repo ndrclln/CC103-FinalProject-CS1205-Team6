@@ -1,0 +1,100 @@
+/*
+    DATE & TIME: April 27, 2026
+    WHAT DID I DO/CHANGE: Created viewCompletedTasks() function with undo support
+    COMMIT TITLE: View Completed Tasks Feature
+    WHO I AM: Althea
+*/
+
+// --- COMPLETED TASK STACK NODE ---
+struct CompletedTask {
+    string name;
+    int effort;           // 1=Low, 2=Medium, 3=High
+    string deadline;
+    string rewardEarned;
+    CompletedTask* next;
+};
+
+// Stack for completed tasks (global)
+CompletedTask* completedTop = nullptr;
+
+// Push a completed task onto the stack
+void pushCompleted(string name, int effort, string deadline, string reward) {
+    CompletedTask* node = new CompletedTask{name, effort, deadline, reward, completedTop};
+    completedTop = node;
+}
+
+// Pop the last completed task (for undo)
+CompletedTask* popCompleted() {
+    if (!completedTop) return nullptr;
+    CompletedTask* temp = completedTop;
+    completedTop = completedTop->next;
+    temp->next = nullptr;
+    return temp;
+}
+
+// Check if stack is empty
+bool isCompletedEmpty() {
+    return completedTop == nullptr;
+}
+
+// Helper: effort number to label
+string effortLabel(int effort) {
+    if (effort == 1) return "Low";
+    if (effort == 2) return "Medium";
+    return "High";
+}
+
+// ============================================
+//   VIEW COMPLETED TASKS (with Undo option)
+// ============================================
+void viewCompletedTasks() {
+    cout << YELLOW << "\n ~~~ COMPLETED TASKS ~~~ \n" << RESET << endl;
+
+    if (isCompletedEmpty()) {
+        cout << RED << " No completed tasks yet!\n" << RESET;
+        return;
+    }
+
+    // Display all completed tasks (traverse stack without destroying it)
+    CompletedTask* current = completedTop;
+    int count = 1;
+    cout << left;
+    cout << CYAN
+         << setw(4)  << "#"
+         << setw(20) << "Task Name"
+         << setw(10) << "Effort"
+         << setw(15) << "Deadline"
+         << "Reward Earned\n"
+         << RESET;
+    cout << string(60, '-') << "\n";
+
+    while (current) {
+        cout << setw(4)  << count++
+             << setw(20) << current->name
+             << setw(10) << effortLabel(current->effort)
+             << setw(15) << current->deadline
+             << current->rewardEarned << "\n";
+        current = current->next;
+    }
+
+    // Undo option
+    cout << YELLOW << "\n (U) Undo Last Completed Task\n";
+    cout << " (B) Back to Menu\n" << RESET;
+    cout << GREEN << "Your choice: " << RESET;
+
+    char choice;
+    cin >> choice;
+    cin.ignore();
+
+    if (choice == 'U' || choice == 'u') {
+        CompletedTask* undone = popCompleted();
+        if (undone) {
+            cout << GREEN << "\n \"" << undone->name << "\" has been moved back to your task queue!\n" << RESET;
+            // Re-enqueue the task (call your enqueue function here)
+            // enqueueTask(undone->name, undone->effort, undone->deadline);
+            delete undone;
+        } else {
+            cout << RED << " Nothing to undo!\n" << RESET;
+        }
+    }
+} 
