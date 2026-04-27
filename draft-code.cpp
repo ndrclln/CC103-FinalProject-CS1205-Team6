@@ -22,22 +22,112 @@ using namespace std;
 #define RESET "\033[0m"
 
 
-// DECLARE FUNCTIONS HERE:
-int menuOptions(int menuChoice);
+//STRUCTS:
+struct DeadlineDate{
+    int year;
+    int month;
+    int day;
+};
 
-int main(){
+struct Task {
+    string name;
+    int effortLevel;
+    DeadlineDate date;
+    Task* next = nullptr;
+};
+
+class Queue{
+    private:
+        Task* front;
+        Task* rear;
+    public:
+        Queue() {
+            front = nullptr; 
+            rear = nullptr;
+        }
+
+    void enqueue(Task* newTask) {
+        if (front == nullptr){
+            front = newTask;
+            rear = newTask;
+        } else{
+            rear->next = newTask;
+            rear = newTask;
+        }
+    };
+
+    void display(){
+        Task* temp = front;
+        cout << YELLOW << "~~~ HERE IS/ARE YOUR TASKS ~~~" << RESET << endl;
+
+        if(front == nullptr){
+            cout << YELLOW << "Yey, you don't have a task to do!" << RESET << endl;
+        }else{
+            while(temp != nullptr){
+                cout << GREEN << "Tasks Name: " << RESET << temp->name << endl;
+                cout << GREEN << "Tasks Effort level (1: Low, 2: Medium, 3: High): " << RESET << temp->effortLevel << endl;
+                cout << GREEN << "Tasks Deadline: " << RESET << temp->date.year << "/" << temp->date.month << "/" << temp->date.day << endl;;
+                cout << endl;
+
+                temp = temp->next;
+                
+            };
+        }
+    };
+};
+
+class priorityQueue{
+    private:
+        Task* front;
+        Task* rear;
+    public:
+        priorityQueue() {
+            front = nullptr; 
+            rear = nullptr;
+        }
     
-    int menuChoice; // Choice for menu options
+    void enqueue(Task* newTask);
+    
+    void display(){
+        Task* temp = front;
+        cout << YELLOW << "~~~ HERE IS/ARE YOUR TASKS ~~~" << RESET << endl;
+
+        if(front == nullptr){
+            cout << YELLOW << "Yey, you don't have a task to do!" << RESET << endl;
+        }else{
+            while(temp != nullptr){
+                cout << GREEN << "Tasks Name: " << RESET << temp->name << endl;
+                cout << GREEN << "Tasks Effort level (1: Low, 2: Medium, 3: High): " << RESET << temp->effortLevel << endl;
+                cout << GREEN << "Tasks Deadline: " << RESET << temp->date.year << "/" << temp->date.month << "/" << temp->date.day << endl;;
+                cout << endl;
+
+                temp = temp->next;
+                
+            };
+        }
+    };
+};
+
+
+// DECLARE FUNCTIONS HERE:
+void menuOptions(Queue& queueTask); // DISPLAY MENU OPTIONS
+
+
+// MAIN
+int main(){
+    Queue queueTask; // For task queing
 
     cout << "\n===" << GREEN <<" Welcome to TaskPulse! " << RESET << "===\n" << endl;
-    menuOptions(menuChoice); // Will show the menu options
+    menuOptions(queueTask); // Will show the menu options
     
     return 0;
 }
 
 // DEFINE FUNCTIONS HERE:
 
-int menuOptions (int menuChoice) {
+//----------------------MENU OPTIONS----------------------------
+void menuOptions (Queue& queueTask) {
+    int menuChoice; // Choice for menu options
     do{
         cout << YELLOW << "\n ~~~ MENU OPTIONS ~~~ \n" << endl;
         cout << "(1) Add Task.\n" ;
@@ -49,22 +139,54 @@ int menuOptions (int menuChoice) {
         cout << "(6) End the Program.\n";
 
         cout << GREEN << "\nPlease enter your choice. ^-^ \n";
-        cout << "Your Choice: " << RESET << endl;
+        cout << "Your Choice: " << RESET;
         cin >> menuChoice;
         cin.ignore();
 
+        cout << endl;
     
         switch (menuChoice) {
-            case 1:
+            case 1: {
+                string name;
+                int effortLevel;
+                int year, month, day;
+
                 cout << "You choose (1) :>\n"; 
-                /*(Input function for choice 1) ;*/ 
-                break;
+                cout << GREEN << "Enter task name: " << RESET;
+                getline(cin, name);
 
-            case 2: 
+                cout << GREEN << "Enter effort level (1: low effort, 2: medium effort, 3: high effort): " << RESET;
+                cin >> effortLevel;
+
+                cout << GREEN << "Kindly enter the Deadline ^-^" << endl;
+                cout << GREEN << "Enter year (YYYY): " << RESET;
+                cin >> year;
+                cout << GREEN << "Enter month (MM): " << RESET;
+                cin >> month;
+                cout << GREEN << "Enter day (DD): " << RESET;
+                cin >> day;
+
+                cout << YELLOW << "Check option 2 to view your tasks ^-^" << RESET;
+
+                // Creating a new node for tasks
+                Task* newTask = new Task;
+                newTask->name = name;
+                newTask->effortLevel = effortLevel;
+                newTask->date.year = year;
+                newTask->date.month = month;
+                newTask->date.day = day;
+                queueTask.enqueue(newTask);
+                
+                cout << endl;
+                break;
+            }
+            case 2: {
                 cout << "You choose (2) :>\n"; 
-                /*(Input function for choice 2) ;*/ 
-                break;
+                queueTask.display();
 
+                cout << endl;
+                break;
+            }
             case 3: 
                 cout << "You choose (3) :>\n"; 
                 /*(Input function for choice 3) ;*/ 
@@ -92,6 +214,9 @@ int menuOptions (int menuChoice) {
         cout << " Thank you for using the app!\n";
         cout << " Goodbye! See you next time. \n";
         cout << "==============================\n\n" << RESET ;
+} 
+ /*
+bool isHigherPriority (Task* a, Task* b){
 
-    return menuChoice;
-}   
+}
+*/
