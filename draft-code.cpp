@@ -20,14 +20,22 @@ NOTE:
     WHAT DID I DO/ CHANGE: Added a class, struct, for menu options 1 and 2
     COMMIT TITLE: Done menu options 1 and 2
     WHO I AM: Endrea
+-------------------------------------------
+    DATE & TIME: April 29, 2029
+    WHAT DID I DO/ CHANGE: Added a class, struct, for priority task and compile Thea's work
+    COMMIT TITLE: Done menu priority task and menu 4 compiled
+    WHO I AM: Endrea
 */
 
 #include <iostream>
+#include <iomanip>
 using namespace std;
 
 // DEFINE COLORS FOR TERMINAL UI HERE:
 #define GREEN "\033[32m"
 #define YELLOW "\033[33m"
+#define RED "\033[31m"
+#define CYAN "\033[36m"
 
 #define RESET "\033[0m"
 
@@ -45,6 +53,104 @@ struct Task {
     DeadlineDate date;
     Task* next = nullptr;
 };
+
+struct CompletedTask {
+    string name;
+    int effort;           //1=Low, 2=Medium, 3=High
+    string deadline;
+    string rewardEarned;
+    CompletedTask* next;
+};
+
+//--- COMPLETED TASK STACK NODE ---
+
+//Stack for completed tasks (global)
+CompletedTask* completedTop = nullptr;
+
+//Push a completed task onto the stack
+void pushCompleted(string name, int effort, string deadline, string reward) {
+    CompletedTask* node = new CompletedTask{name, effort, deadline, reward, completedTop};
+    completedTop = node;
+}
+
+//Pop the last completed task (for undo)
+CompletedTask* popCompleted() {
+    if (!completedTop) return nullptr;
+    CompletedTask* temp = completedTop;
+    completedTop = completedTop->next;
+    temp->next = nullptr;
+    return temp;
+}
+
+//Check if stack is empty
+bool isCompletedEmpty() {
+    return completedTop == nullptr;
+}
+
+//Helper: effort number to label
+string effortLabel(int effort) {
+    if (effort == 1) return "Low";
+    if (effort == 2) return "Medium";
+    return "High";
+}
+
+// VIEW COMPLETED TASKS (with Undo option)
+void viewCompletedTasks() {
+    cout << YELLOW << "\n ~~~ COMPLETED TASKS ~~~ \n" << RESET << endl;
+
+    if (isCompletedEmpty()) {
+        cout << RED << " No completed tasks yet!\n" << RESET;
+        return;
+    }
+
+    // Display all completed tasks (traverse stack without destroying it)
+    CompletedTask* current = completedTop;
+    int count = 1;
+    cout << left;
+    cout << CYAN
+         << setw(4)  << "#"
+         << setw(20) << "Task Name"
+         << setw(10) << "Effort"
+         << setw(15) << "Deadline"
+         << "Reward Earned\n"
+         << RESET;
+    cout << string(60, '-') << "\n";
+
+    while (current) {
+        cout << setw(4)  << count++
+             << setw(20) << current->name
+             << setw(10) << effortLabel(current->effort)
+             << setw(15) << current->deadline
+             << current->rewardEarned << "\n";
+        current = current->next;
+    }
+
+    //Undo option
+    cout << YELLOW << "\n (U) Undo Last Completed Task\n";
+    cout << " (B) Back to Menu\n" << RESET;
+    cout << GREEN << "Your choice: " << RESET;
+
+    char choice;
+    cin >> choice;
+    cin.ignore();
+
+    if (choice == 'U' || choice == 'u') {
+        CompletedTask* undone = popCompleted();
+        if (undone) {
+            cout << GREEN << "\n \"" << undone->name << "\" has been moved back to your task queue!\n" << RESET;
+            // Re-enqueue the task (call your enqueue function here)
+            // enqueueTask(undone->name, undone->effort, undone->deadline);
+            delete undone;
+        } else {
+            cout << RED << " Nothing to undo!\n" << RESET;
+        }
+    }
+} 
+// -----------
+
+// DECLARE FUNCTIONS HERE:
+bool isHigherPriority (Task* a, Task* b); // FOR DETERMINING PRIORITY
+// declare here for ordering puropose
 
 class Queue{
     private:
@@ -86,21 +192,77 @@ class Queue{
     };
 };
 
-class priorityQueue{
+// FUNCTION DEFINITION HERE FOR ORDERING PURPOSE
+bool isHigherPriority (Task* a, Task* b){
+    // Year comparison
+    if (a->date.year < b->date.year){
+        return true;
+    }
+    if (a->date.year > b->date.year){
+        return false;
+    }
+
+    // if years are = then compare month
+    if (a->date.month < b->date.month){
+        return true;
+    }
+    if (a->date.month > b->date.month){
+        return false;
+    }
+
+    // if months are = then compare day
+    if (a->date.day < b->date.day){
+        return true;
+    }
+    if (a->date.day > b->date.day){
+        return false;
+    }
+
+    // if day are = then compare effort level
+    // If a has greater priority level then it will be prioritize
+    if (a->effortLevel > b->effortLevel){
+        return true;
+    }
+    if (a->effortLevel < b->effortLevel){
+        return false;
+    }
+
+    return false;
+}
+
+
+class PriorityQueue{
     private:
         Task* front;
         Task* rear;
     public:
-        priorityQueue() {
+        PriorityQueue() {
             front = nullptr; 
             rear = nullptr;
         }
     
-    void enqueue(Task* newTask);
+    void enqueue(Task* newTask){
+        if(front == nullptr){
+            front = newTask;
+            rear = newTask;
+        }
+        else if(isHigherPriority(newTask, front)){
+            newTask->next = front;
+            front = newTask;
+        }
+        else{
+            Task* temp = front;
+            while(temp->next != nullptr && !isHigherPriority(newTask, temp->next)){
+                temp = temp->next;
+            }
+            newTask->next = temp->next;
+            temp->next = newTask;
+        }
+    }
     
     void display(){
         Task* temp = front;
-        cout << YELLOW << "~~~ HERE IS/ARE YOUR TASKS ~~~" << RESET << endl;
+        cout << YELLOW << "~~~ HERE IS/ARE YOUR " << RED << "PRIORITY" << YELLOW << " TASKS ~~~" << RESET << endl;
 
         if(front == nullptr){
             cout << YELLOW << "Yey, you don't have a task to do!" << RESET << endl;
@@ -118,17 +280,16 @@ class priorityQueue{
     };
 };
 
-
 // DECLARE FUNCTIONS HERE:
-void menuOptions(Queue& queueTask); // DISPLAY MENU OPTIONS
-
+void menuOptions(Queue& queueTask, PriorityQueue& priorityTask); // DISPLAY MENU OPTIONS
 
 // MAIN
 int main(){
     Queue queueTask; // For task queing
+    PriorityQueue priorityTask; // For priority task
 
     cout << "\n===" << GREEN <<" Welcome to TaskPulse! " << RESET << "===\n" << endl;
-    menuOptions(queueTask); // Will show the menu options
+    menuOptions(queueTask, priorityTask); // Will show the menu options
     
     return 0;
 }
@@ -136,7 +297,7 @@ int main(){
 // DEFINE FUNCTIONS HERE:
 
 //----------------------MENU OPTIONS----------------------------
-void menuOptions (Queue& queueTask) {
+void menuOptions (Queue& queueTask, PriorityQueue& priorityTask) {
     int menuChoice; // Choice for menu options
     do{
         cout << YELLOW << "\n ~~~ MENU OPTIONS ~~~ \n" << endl;
@@ -185,13 +346,20 @@ void menuOptions (Queue& queueTask) {
                 newTask->date.year = year;
                 newTask->date.month = month;
                 newTask->date.day = day;
-                queueTask.enqueue(newTask);
+
+                if (effortLevel == 3){
+                    priorityTask.enqueue(newTask);
+                } else{
+                    queueTask.enqueue(newTask);
+                }
                 
                 cout << endl;
                 break;
             }
             case 2: {
-                cout << "You choose (2) :>\n"; 
+                cout << "You choose (2) :>\n";
+
+                priorityTask.display();
                 queueTask.display();
 
                 cout << endl;
@@ -204,7 +372,8 @@ void menuOptions (Queue& queueTask) {
 
             case 4: 
                 cout << "You choose (4) :>\n"; 
-                /*(Input function for choice 4) ;*/ 
+                
+                viewCompletedTasks();
                 break;
 
             case 5: 
@@ -225,8 +394,3 @@ void menuOptions (Queue& queueTask) {
         cout << " Goodbye! See you next time. \n";
         cout << "==============================\n\n" << RESET ;
 } 
- /*
-bool isHigherPriority (Task* a, Task* b){
-
-}
-*/
