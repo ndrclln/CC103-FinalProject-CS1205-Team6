@@ -1,0 +1,36 @@
+NOTE:
+    WHEN EDITING THE FILE FILL THIS UP FIRST:
+    DATE & TIME:
+    WHAT DID I DO/ CHANGE:
+    COMMIT TITLE: year
+    WHO I AM:
+-------------------------------------------
+    DATE & TIME: April 24, 2026 | 10:31 PM
+    WHAT DID I DO/ CHANGE: I CREATED A MENU OPTIONS FOR OUR APP OPENING
+    COMMIY TITLE: Menu Options
+    WHO I AM: ENDREA
+-------------------------------------------
+    DATE & TIME: April 27, 2026
+    WHAT DID I DO/CHANGE: Created viewCompletedTasks() function with undo support
+    COMMIT TITLE: View Completed Tasks Feature
+    WHO I AM: Althea 
+
+    DATE & TIME: April 27, 2029
+    WHAT DID I DO/ CHANGE: Added a class, struct, for menu options 1 and 2
+    COMMIT TITLE: Done menu options 1 and 2
+    WHO I AM: Endrea
+
+    DATE & TIME: April 27, 2026 | 10:33 PM
+    WHAT DID I DO/ CHANGE: I ADDED MARK TASK COMPLETE. ADDED RANDOM REWARD SYSTEM. ADDED  REWARDS STORAGE
+    COMMIY TITLE: ADD TASK COMPLETE AND REWARD
+    WHO I AM: LYR
+-------------------------------------------
+    DATE & TIME: April 29, 2026
+    WHAT DID I DO/ CHANGE: Added a class, struct, for priority task and compile Thea's work
+    COMMIT TITLE: Done menu priority task and menu 4 compiled
+    WHO I AM: Endrea
+-------------------------------------------
+    DATE & TIME: MAY 04, 2026
+    WHAT DID I DO/ CHANGE: Finalizing
+    COMMIT TITLE: Final
+    WHO I AM: Endrea, Thea, Lyren

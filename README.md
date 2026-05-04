@@ -54,3 +54,54 @@ Students often struggles to decide which task to prioritize when multiple deadli
    - Task is removed from queue
    - System randomly assigns a reward
 ##
+## 🔃Iterative vs Recursive Comparison
+TaskPulse primarily uses an **iterative approach** — `while` loops handle all
+queue traversal, task insertion, and display operations across `Queue`,
+`PriorityQueue`, and the completed task stack.
+
+A **recursive-style approach** appears in `isHigherPriority()`, which breaks
+priority comparison into steps: month → day → effort level, similar to how
+a recursive function narrows down a problem step by step.
+
+| | Iterative | Recursive |
+|---|---|---|
+| **Speed** | Faster, no call overhead | Slightly slower |
+| **Readability** | Clear for list traversal | Cleaner for comparisons |
+| **Used for** | `enqueue()`, `display()` | `isHigherPriority()` |
+
+Overall, iterative is more practical for TaskPulse since most operations
+involve traversing linked lists.
+##
+## ✨Design Decisions
+
+- **Effort level 3 → Priority Queue; 1–2 → Regular Queue** — reserves the
+  priority lane only for genuinely high-effort tasks.
+- **Linked lists over arrays** — allows dynamic insertion and removal without
+  shifting or resizing elements.
+- **Priority order: month → day → effort** — mirrors real-world urgency;
+  earlier deadline always wins, effort only breaks ties.
+- **Random reward assignment** — keeps motivation high by making rewards
+  unpredictable rather than fixed.
+##
+## 👤Team Members
+- **Babao, Althea Clarine L.**
+- **Castillo, Endrea Collin B.**
+- **Rodriguez, Lyren D.**
+##
+## 🙏🏻Acknowledgements
+
+We would like to express our sincere gratitude to **Ms. Fatima Marie Agdon**
+for her guidance and support throughout the development of TaskPulse. Her
+teachings in CC 103 - Data Structures and Algorithms gave us the foundation
+needed to design and implement this project.
+
+We also want to acknowledge each member of **Team 6 - De-QUEUE-tives** —
+Endrea, Althea, and Lyren — for their dedication, collaboration, and hard
+work in bringing this project to life. Every feature built and every bug
+fixed was a team effort.
+
+Finally, we extend our thanks to the online resources and references that
+helped us better understand data structures, C++ implementation, and
+software design — particularly in applying linked lists, stacks, queues,
+and priority queues in a real-world context.
+##
