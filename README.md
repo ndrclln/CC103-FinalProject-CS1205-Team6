@@ -67,7 +67,7 @@ a recursive function narrows down a problem step by step.
 |---|---|---|
 | **Speed** | Faster, no call overhead | Slightly slower |
 | **Readability** | Clear for list traversal | Cleaner for comparisons |
-| **Used for** | `enqueue()`, `display()` | `isHigherPriority()` |
+| **Used for** | `enqueue()`, `display()` | `getReward()` |
 
 Overall, iterative is more practical for TaskPulse since most operations
 involve traversing linked lists.
