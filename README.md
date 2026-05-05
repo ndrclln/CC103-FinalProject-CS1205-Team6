@@ -19,14 +19,13 @@ Students often struggles to decide which task to prioritize when multiple deadli
 - Add tasks with name, effort level, and deadline.
 - Automatic tasks prioritization.
 - Mark tasks as completed task.
-- Undo last completed task.
-- Search tasks by deadline.
+- Display completed tasks.
 - Reward system for motivation.
 ##
 ## 🛠️Data Structures Used 
 | Data Structure | Purpose | Reason |
 |---------------|--------|--------|
-| Stack | Undo last completed task | Follows LIFO principle |
+| Stack | Undo last completed task, Display completed tasks | Follows LIFO principle |
 | Queue | Store normal tasks | Follows FIFO order |
 | Priority Queue | Store urgent/high-effort tasks | Ensures high priority tasks are handled first |
 ##
@@ -51,7 +50,7 @@ Students often struggles to decide which task to prioritize when multiple deadli
    - If equal → FIFO order
 
 4. When completing a task:
-   - Task is removed from queue
+   - Task is removed from queue and traverse ro completed task.
    - System randomly assigns a reward
 ##
 ## 🔃Iterative vs Recursive Comparison
@@ -59,9 +58,8 @@ TaskPulse primarily uses an **iterative approach** — `while` loops handle all
 queue traversal, task insertion, and display operations across `Queue`,
 `PriorityQueue`, and the completed task stack.
 
-A **recursive-style approach** appears in `isHigherPriority()`, which breaks
-priority comparison into steps: month → day → effort level, similar to how
-a recursive function narrows down a problem step by step.
+A **recursive-style approach** appears in `getReward()`, which the function 
+call its self effort level →  month to get the randomize reward.
 
 | | Iterative | Recursive |
 |---|---|---|
@@ -78,7 +76,7 @@ involve traversing linked lists.
   priority lane only for genuinely high-effort tasks.
 - **Linked lists over arrays** — allows dynamic insertion and removal without
   shifting or resizing elements.
-- **Priority order: month → day → effort** — mirrors real-world urgency;
+- **Priority order: effort level → month → day** — mirrors real-world urgency;
   earlier deadline always wins, effort only breaks ties.
 - **Random reward assignment** — keeps motivation high by making rewards
   unpredictable rather than fixed.
