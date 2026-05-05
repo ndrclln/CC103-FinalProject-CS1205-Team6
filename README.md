@@ -25,7 +25,7 @@ Students often struggles to decide which task to prioritize when multiple deadli
 ## 🛠️Data Structures Used 
 | Data Structure | Purpose | Reason |
 |---------------|--------|--------|
-| Stack | Undo last completed task, Display completed tasks | Follows LIFO principle |
+| Stack | Display completed tasks, Undo last completed task | Follows LIFO principle |
 | Queue | Store normal tasks | Follows FIFO order |
 | Priority Queue | Store urgent/high-effort tasks | Ensures high priority tasks are handled first |
 ##
